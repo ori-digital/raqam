@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0e1a">
+<title>Рақам — приложение сотрудника для розничных сетей и сервисных компаний</title>
+<meta name="description" content="Чек-листы смен с фотоотчётом, приход и уход с геозоной, обучение и аттестация, расчёт премий, дашборд руководителя — в одном приложении в Telegram, под вашим брендом. От 590 сомони в месяц.">
+<meta property="og:title" content="Рақам — вся работа команды в одном приложении">
+<meta property="og:description" content="Чек-листы, фотоконтроль, обучение, премии и дашборд — в Telegram, под вашим брендом. От 590 смн/мес.">
+<meta property="og:type" content="website">
+<style>
+/* ──────────────────────────────────────────────────────────────────────────
+   Лендинг Рақам. Один файл, без сборки и без внешних запросов — как и весь
+   остальной фронт платформы. Тёмный герой + светлые секции: цвет работает
+   акцентом, а не сплошной заливкой, иначе читать длинный текст тяжело.
+   ────────────────────────────────────────────────────────────────────────── */
+:root{
+  color-scheme:light;
+  --acc:#7B2FF2;          /* индиго платформы — заголовки-акценты, рамки */
+  --acc-d:#5F1FC8;
+  --acc-soft:rgba(123,47,242,.09);
+  --acc-line:rgba(123,47,242,.26);
+  --cta:#FF6B3D;          /* тёплый — только кнопки действия, чтобы их было видно */
+  --cta-d:#E8531F;
+  --night:#0A0E1A;        /* фон тёмных секций */
+  --night-2:#141A2E;      /* карточка на тёмном */
+  --night-line:rgba(255,255,255,.10);
+  --ink:#111624;
+  --ink-2:#404a60;
+  --muted:#6b7488;
+  --plane:#FFFFFF;
+  --plane-2:#F5F6FA;
+  --line:#E4E7EF;
+  --good:#0F9D58;
+  --shadow:0 1px 2px rgba(17,22,36,.05),0 16px 40px -22px rgba(17,22,36,.28);
+  --r:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--plane);color:var(--ink);line-height:1.6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-text-size-adjust:100%;}
+img{max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:72px 0}
+h2{font-size:clamp(24px,3.4vw,34px);line-height:1.2;letter-spacing:-.025em;margin:0 0 10px;font-weight:800;text-wrap:balance}
+h3{font-size:18px;margin:0 0 6px;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 14px}
+.lead{font-size:17px;color:var(--ink-2);max-width:64ch;margin-bottom:34px}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--acc);margin:0 0 10px}
+.dark{background:var(--night);color:#fff}
+.dark h2,.dark h3{color:#fff}
+.dark .lead{color:#aeb7cd}
+.dark .eyebrow{color:#B79BFF}
+.tint{background:var(--plane-2)}
+
+/* ── кнопки ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--cta);color:#fff;font-weight:700;font-size:16px;padding:15px 30px;
+  border:0;border-radius:12px;text-decoration:none;cursor:pointer;font-family:inherit;
+  transition:background .15s,transform .15s;white-space:nowrap}
+.btn:hover{background:var(--cta-d);transform:translateY(-1px)}
+.btn:focus-visible{outline:3px solid #B79BFF;outline-offset:2px}
+.btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.34)}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.btn.line{background:transparent;color:var(--acc-d);border:1px solid var(--acc-line)}
+.btn.line:hover{background:var(--acc-soft)}
+.btn[disabled]{opacity:.6;cursor:default;transform:none}
+
+/* ── шапка ── */
+header{position:sticky;top:0;z-index:20;background:rgba(10,14,26,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--night-line)}
+.bar{display:flex;align-items:center;gap:22px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.logo i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--acc),#B79BFF);font-style:normal;font-size:18px}
+nav{margin-left:auto;display:flex;gap:24px;align-items:center}
+nav a{color:#c3cbdd;text-decoration:none;font-size:15px}
+nav a:hover{color:#fff}
+nav .btn{padding:10px 20px;font-size:15px}
+@media(max-width:860px){nav a:not(.btn){display:none}}
+
+/* ── герой ── */
+.hero{padding:84px 0 92px}
+.hero h1{font-size:clamp(30px,5.4vw,52px);line-height:1.08;letter-spacing:-.035em;margin:0 0 20px;
+  font-weight:800;max-width:16ch;text-wrap:balance}
+.hero .sub{font-size:clamp(17px,2.2vw,20px);color:#b8c0d4;max-width:56ch;margin:0 0 34px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.trust{display:flex;gap:34px;flex-wrap:wrap;margin-top:52px;padding-top:30px;border-top:1px solid var(--night-line)}
+.trust b{display:block;font-size:27px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.trust span{font-size:14px;color:#8f99b2}
+
+/* ── сетки карточек ── */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.card{background:var(--plane);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.card p{color:var(--ink-2);font-size:15px;margin:0}
+.dark .card{background:var(--night-2);border-color:var(--night-line)}
+.dark .card p{color:#a9b2c8}
+.ico{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;
+  background:var(--acc-soft);font-size:21px;margin-bottom:14px}
+.dark .ico{background:rgba(183,155,255,.14)}
+
+/* ── боли ── */
+.pain{padding-left:20px;border-left:3px solid #E9EAF0}
+.pain h3{color:var(--ink)}
+.pain p{color:var(--muted);font-size:15px}
+.pain .then{display:block;margin-top:10px;color:var(--acc-d);font-weight:600}
+
+/* ── шаги ── */
+.step{position:relative;padding-top:8px}
+.step .n{font-size:46px;font-weight:800;color:var(--acc);opacity:.24;line-height:1;letter-spacing:-.04em}
+.step h3{margin-top:10px}
+
+/* ── тарифы ── */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+@media(max-width:880px){.plans{grid-template-columns:1fr;max-width:460px;margin:0 auto}}
+.plan{background:var(--plane);border:1px solid var(--line);border-radius:20px;padding:28px 26px;position:relative}
+.plan.flag{border:2px solid var(--acc);box-shadow:var(--shadow)}
+.plan .tag{position:absolute;top:-13px;left:26px;background:var(--acc);color:#fff;font-size:12px;
+  font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 13px;border-radius:999px}
+.plan .nm{font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.plan .pr{font-size:38px;font-weight:800;letter-spacing:-.03em;margin:8px 0 2px}
+.plan .pr small{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:0}
+.plan .yr{font-size:14px;color:var(--good);font-weight:600;margin-bottom:16px}
+.plan .lim{font-size:15px;color:var(--ink-2);padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:16px}
+.plan ul{list-style:none;margin:0 0 22px;padding:0}
+.plan li{font-size:15px;color:var(--ink-2);padding:6px 0 6px 26px;position:relative}
+.plan li:before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:800}
+.plan li.no{color:var(--muted)}
+.plan li.no:before{content:"—";color:#c3c8d4}
+.plan .btn{width:100%}
+
+/* ── таблицы ── */
+.tbl{width:100%;border-collapse:collapse;font-size:15px;background:var(--plane);
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--r)}
+.tbl th,.tbl td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line)}
+.tbl th{background:var(--acc-soft);font-weight:700;font-size:14px;white-space:nowrap}
+.tbl td:last-child,.tbl th:last-child{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tr.us td{background:var(--acc-soft);font-weight:700}
+
+/* ── врезка ── */
+.note{background:var(--acc-soft);border-left:4px solid var(--acc);border-radius:0 var(--r) var(--r) 0;
+  padding:22px 26px;margin-top:26px}
+.note b{display:block;margin-bottom:6px;font-size:17px}
+.note p{margin:0;color:var(--ink-2)}
+
+/* ── кейс ── */
+.case{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+@media(max-width:820px){.case{grid-template-columns:1fr;gap:28px}}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.num{background:var(--night-2);border:1px solid var(--night-line);border-radius:var(--r);padding:20px}
+.num b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.num span{font-size:14px;color:#8f99b2}
+
+/* ── faq ── */
+details{border:1px solid var(--line);border-radius:var(--r);background:var(--plane);margin-bottom:12px}
+summary{padding:19px 24px;cursor:pointer;font-weight:700;font-size:16px;list-style:none;display:flex;
+  justify-content:space-between;align-items:center;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:23px;font-weight:400;color:var(--acc);flex:none;line-height:1}
+details[open] summary:after{content:"−"}
+details p{padding:0 24px 20px;margin:0;color:var(--ink-2);font-size:15px}
+
+/* ── форма ── */
+.form{background:var(--night-2);border:1px solid var(--night-line);border-radius:20px;padding:32px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.form input,.form textarea,.form select{width:100%;margin-bottom:14px;padding:14px 16px;border-radius:11px;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;
+  font-size:16px;font-family:inherit}
+.form input::placeholder,.form textarea::placeholder{color:#7d879e}
+.form input:focus,.form textarea:focus,.form select:focus{outline:2px solid var(--acc);outline-offset:1px;border-color:transparent}
+.form select{color:#fff}
+.form select option{background:var(--night-2)}
+.form .btn{width:100%;margin-top:4px}
+.hint{font-size:13px;color:#8f99b2;margin:12px 0 0;text-align:center}
+.msg{margin-top:14px;padding:14px 16px;border-radius:11px;font-size:15px}
+.msg.err{background:rgba(255,107,61,.14);color:#FFB394}
+.msg.ok{background:rgba(15,157,88,.16);color:#8FE3B8}
+
+footer{background:var(--night);color:#8f99b2;padding:44px 0;border-top:1px solid var(--night-line);font-size:14px}
+footer a{color:#c3cbdd}
+.fbar{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top"><i>Р</i>Рақам</a>
+    <nav>
+      <a href="#kak">Как работает</a>
+      <a href="#chto">Возможности</a>
+      <a href="#tarify">Тарифы</a>
+      <a href="#voprosy">Вопросы</a>
+      <a class="btn" href="#zayavka">Показать демо</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── ГЕРОЙ ─────────────────────────────────────────────────────────────── -->
+<section class="dark hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Платформа цифровизации бизнеса</p>
+    <h1>Вся работа команды — в одном приложении</h1>
+    <p class="sub">Сотрудник подтверждает каждый шаг смены фотографией с места, отмечает приход
+      и уход, проходит обучение и видит свою премию. Руководитель видит все точки в реальном
+      времени — не выезжая на них.</p>
+    <div class="cta-row">
+      <a class="btn" href="#zayavka">Показать демо</a>
+      <a class="btn ghost" href="#tarify">Смотреть тарифы</a>
+    </div>
+    <div class="trust">
+      <div><b>Telegram</b><span>без установки приложения</span></div>
+      <div><b>Ваш бренд</b><span>название, логотип, свой бот</span></div>
+      <div><b>от 590 смн</b><span>в месяц, оплата в сомони</span></div>
+      <div><b>RU · TJ</b><span>русский и таджикский</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ПРОБЛЕМА ──────────────────────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Знакомо?</p>
+    <h2>Как это устроено сегодня</h2>
+    <p class="lead">Почти в каждой компании, куда мы приходим, повторяется одно и то же.</p>
+    <div class="grid g4">
+      <div class="pain">
+        <h3>Бумажные чек-листы</h3>
+        <p>Заполняются задним числом или не заполняются вовсе. Проверить, что действительно
+          сделано, нельзя.
+          <span class="then">Стало: каждый пункт с фотографией, временем и местом съёмки.</span></p>
+      </div>
+      <div class="pain">
+        <h3>Фотоотчёты в чатах</h3>
+        <p>Сотни снимков в рабочих группах. Руководитель листает их вручную и отвлекается
+          весь день.
+          <span class="then">Стало: очередь на проверку, один экран, три кнопки.</span></p>
+      </div>
+      <div class="pain">
+        <h3>Обучение на словах</h3>
+        <p>Новичка учит тот, кто свободен. Что именно он усвоил — никто не знает.
+          <span class="then">Стало: уроки, тесты, аттестация и сертификат в приложении.</span></p>
+      </div>
+      <div class="pain">
+        <h3>Премия вручную</h3>
+        <p>Раз в месяц кто-то сводит таблицы и спорит с сотрудниками о цифрах.
+          <span class="then">Стало: премия считается сама, сотрудник видит её каждый день.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── КАК РАБОТАЕТ ──────────────────────────────────────────────────────── -->
+<section class="tint" id="kak">
+  <div class="wrap">
+    <p class="eyebrow">Как работает</p>
+    <h2>Запуск занимает недели, а не месяцы</h2>
+    <p class="lead">Устанавливать ничего не нужно: приложение открывается в Telegram, который
+      уже стоит у каждого сотрудника.</p>
+    <div class="grid g3">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>Переносим ваши процессы</h3>
+        <p style="color:var(--ink-2);font-size:15px">Ваши чек-листы, инструкции и учебные
+          материалы становятся экранами приложения. Настраиваем точки, геозоны, роли
+          и цепочку подчинения. Оформляем под ваш бренд.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>Команда заходит по ссылке</h3>
+        <p style="color:var(--ink-2);font-size:15px">Сотрудник открывает бота, пишет своё имя —
+          и получает роль и точку. Обучение и памятки уже внутри, отдельно собирать людей
+          не нужно.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>Работа становится видимой</h3>
+        <p style="color:var(--ink-2);font-size:15px">С первого дня видно, кто вышел, что сделано
+          и где отклонения. Дальше мы дорабатываем систему под вас — это входит
+          в подписку.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ВОЗМОЖНОСТИ ───────────────────────────────────────────────────────── -->
+<section class="dark" id="chto">
+  <div class="wrap">
+    <p class="eyebrow">Возможности</p>
+    <h2>Восемь направлений в одном приложении</h2>
+    <p class="lead">Модули подключаются по мере надобности. Лишнего на экране у сотрудника
+      не будет.</p>
+    <div class="grid g4">
+      <div class="card"><div class="ico">✅</div><h3>Чек-листы смен</h3>
+        <p>Фото на каждый пункт, проверка руководителем, возврат на пересъёмку. Повтор старого
+          снимка система ловит сама.</p></div>
+      <div class="card"><div class="ico">📍</div><h3>Приход и уход</h3>
+        <p>Отметка фотографией с привязкой к месту и времени. Геозоны точек, отлучки, обеды,
+          выезды по маршруту.</p></div>
+      <div class="card"><div class="ico">📚</div><h3>Обучение</h3>
+        <p>Уроки с мини-тестами, аттестация с проходным баллом, сертификат. Повторная
+          аттестация по расписанию.</p></div>
+      <div class="card"><div class="ico">🚀</div><h3>Онбординг</h3>
+        <p>Путь новичка по шагам с критериями готовности: что он должен уметь к концу первого
+          дня, недели, месяца.</p></div>
+      <div class="card"><div class="ico">💼</div><h3>Найм</h3>
+        <p>Вакансии, анкета кандидата со своими вопросами под каждую должность, отбор
+          и отклики в одном месте.</p></div>
+      <div class="card"><div class="ico">🗒</div><h3>Задачи</h3>
+        <p>Поручение с исполнителем, сроком, приёмкой работы и повторами. Заменяет отдельную
+          программу для задач.</p></div>
+      <div class="card"><div class="ico">📊</div><h3>Дашборд руководителя</h3>
+        <p>Выручка, средний чек, число чеков и маржа по каждой точке, с планками и сравнением
+          с прошлым месяцем.</p></div>
+      <div class="card"><div class="ico">🎁</div><h3>Лояльность</h3>
+        <p>Бонусная карта клиента в том же приложении: начисления, списания, история
+          по каждому покупателю.</p></div>
+    </div>
+    <div class="note" style="background:rgba(183,155,255,.10);border-color:#B79BFF">
+      <b style="color:#fff">Премия считается сама</b>
+      <p style="color:#a9b2c8">Правила премирования вашей компании закладываются в систему один
+        раз. Дальше сотрудник каждый день видит, сколько заработал и какое условие ещё не
+        выполнено, — а руководителю не приходится сводить таблицы в конце месяца.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ТАРИФЫ ────────────────────────────────────────────────────────────── -->
+<section id="tarify">
+  <div class="wrap">
+    <p class="eyebrow">Тарифы</p>
+    <h2>Цена зависит от числа точек и людей</h2>
+    <p class="lead">Оплата в сомони по счёту. Отказаться можно с любого месяца, без штрафов
+      и удержаний.</p>
+
+    <div class="plans">
+      <div class="plan">
+        <div class="nm">Старт</div>
+        <div class="pr">590 <small>смн / мес</small></div>
+        <div class="yr">472 смн при годовой оплате</div>
+        <div class="lim">1 точка · до 8 сотрудников</div>
+        <ul>
+          <li>Чек-листы смен с фотоотчётом</li>
+          <li>Приход и уход с геозоной</li>
+          <li>Отлучки и выезды по маршруту</li>
+          <li>Обучение и аттестация</li>
+          <li>Выгрузки в Excel</li>
+          <li class="no">Найм, задачи, дашборд</li>
+          <li class="no">Свой бот и оформление</li>
+        </ul>
+        <a class="btn line" href="#zayavka">Обсудить</a>
+      </div>
+
+      <div class="plan">
+        <div class="nm">Рабочий</div>
+        <div class="pr">1 100 <small>смн / мес</small></div>
+        <div class="yr">880 смн при годовой оплате</div>
+        <div class="lim">до 3 точек · до 20 сотрудников</div>
+        <ul>
+          <li>Всё из тарифа «Старт»</li>
+          <li>Онбординг новичка по шагам</li>
+          <li>Найм: вакансии и отбор</li>
+          <li>Расчёт премий по вашим правилам</li>
+          <li>Задачи и поручения</li>
+          <li>Дашборд руководителя</li>
+          <li>Свой бот и своё оформление</li>
+        </ul>
+        <a class="btn line" href="#zayavka">Обсудить</a>
+      </div>
+
+      <div class="plan flag">
+        <span class="tag">Всё включено</span>
+        <div class="nm">Сеть</div>
+        <div class="pr">1 800 <small>смн / мес</small></div>
+        <div class="yr">1 440 смн при годовой оплате</div>
+        <div class="lim">до 10 точек · до 50 сотрудников</div>
+        <ul>
+          <li>Всё из тарифа «Рабочий»</li>
+          <li>Программа лояльности</li>
+          <li>А-игроки: оценка потенциала</li>
+          <li>Оповещения по цепочке подчинения</li>
+          <li>Объявления в рабочую группу</li>
+          <li>Приоритет в доработках</li>
+        </ul>
+        <a class="btn" href="#zayavka">Показать демо</a>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Чем дольше срок — тем ниже цена</b>
+      <p>3–5 месяцев — скидка 5 %, 6–11 месяцев — 10 %, год — 20 %. Цена фиксируется на весь
+        оплаченный срок: подорожание платформы вас не касается до конца периода.
+        Годовая предоплата тарифа «Сеть» — 17 280 смн вместо 21 600.</p>
+    </div>
+
+    <h3 style="margin:44px 0 12px;font-size:21px">Внедрение — разовый платёж</h3>
+    <p class="lead" style="margin-bottom:18px">От 4 000 смн на «Старте», от 7 000 на «Рабочем»,
+      от 9 000 на «Сети». Входит перенос ваших материалов, настройка ролей и геозон,
+      брендирование, отдельный бот компании, обучение персонала, памятки по ролям
+      и сопровождение первого месяца.</p>
+    <div class="scroller">
+      <table class="tbl">
+        <thead><tr><th>Если процессов и регламентов ещё нет</th><th>Единица</th><th>Цена</th></tr></thead>
+        <tbody>
+          <tr><td>Описание процесса и чек-лист должности</td><td>за должность</td><td>от 1 500 смн</td></tr>
+          <tr><td>Должностная инструкция или стандарт</td><td>за документ</td><td>от 800 смн</td></tr>
+          <tr><td>Учебный курс с нуля: 8–12 уроков с тестами</td><td>за направление</td><td>от 4 000 смн</td></tr>
+          <tr><td>Правила премирования</td><td>за документ</td><td>от 2 000 смн</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-top:12px">Если материалы есть в любом
+      виде — хоть в тетради, хоть в переписке, — они идут в зачёт и цена ниже.</p>
+  </div>
+</section>
+
+<!-- ── СРАВНЕНИЕ ─────────────────────────────────────────────────────────── -->
+<section class="tint">
+  <div class="wrap">
+    <p class="eyebrow">Из чего складывается цена</p>
+    <h2>То же самое по частям стоит дороже</h2>
+    <p class="lead">Каждый из этих сервисов закрывает одно направление. Расчёт для сети
+      из пяти точек и 16 сотрудников, по открытым прайсам.</p>
+    <div class="scroller">
+      <table class="tbl">
+        <thead><tr><th>Решение</th><th>Что закрывает</th><th>В месяц</th></tr></thead>
+        <tbody>
+          <tr><td>Jibble (Premium)</td><td>приход-уход, GPS, геозоны</td><td>≈ 665 смн</td></tr>
+          <tr><td>Connecteam (Expert)</td><td>чек-листы, обучение, задачи</td><td>≈ 920 смн</td></tr>
+          <tr><td>Trello (Standard)</td><td>поручения и задачи</td><td>≈ 900 смн</td></tr>
+          <tr><td>Эквио, тариф «Старт»</td><td>только обучение персонала</td><td>≈ 1 015 смн</td></tr>
+          <tr><td>UDS, тариф Pro</td><td>только лояльность</td><td>≈ 1 055 смн</td></tr>
+          <tr class="us"><td>Рақам, тариф «Сеть»</td><td>всё перечисленное сразу</td><td>1 800 смн</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <b>Проверка на здравый смысл</b>
+      <p>Обучение персонала у одного поставщика и программа лояльности у другого — это уже
+        2 070 смн в месяц за два направления. Рақам даёт эти два и ещё шесть за 1 800 смн,
+        на русском и таджикском, с оплатой в сомони по счёту.</p>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-top:16px">Ни один из перечисленных
+      сервисов не переведён на таджикский, не считает премию по вашим правилам и требует
+      оплаты картой в валюте.</p>
+  </div>
+</section>
+
+<!-- ── КЕЙС ──────────────────────────────────────────────────────────────── -->
+<section class="dark">
+  <div class="wrap">
+    <div class="case">
+      <div>
+        <p class="eyebrow">Работает в бою</p>
+        <h2>Розничная сеть парфюмерии</h2>
+        <p class="lead">Пять точек и офис, 16 сотрудников. До запуска: бумажные чек-листы,
+          фотоотчёты в телеграм-группах, обучение на словах, премия — сведением таблиц.
+          Приложение запущено в июле 2026 года и работает ежедневно.</p>
+        <p style="color:#8f99b2;font-size:14px;margin:0">Название компании называем только
+          с её согласия — покажем на встрече.</p>
+      </div>
+      <div class="nums">
+        <div class="num"><b>22</b><span>чек-листа по точкам и должностям</span></div>
+        <div class="num"><b>10</b><span>уроков с тестами и аттестацией</span></div>
+        <div class="num"><b>17</b><span>шагов онбординга новичка</span></div>
+        <div class="num"><b>8</b><span>направлений в одном приложении</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ВОПРОСЫ ───────────────────────────────────────────────────────────── -->
+<section id="voprosy">
+  <div class="wrap" style="max-width:840px">
+    <p class="eyebrow">Вопросы</p>
+    <h2>Что обычно спрашивают</h2>
+    <div style="margin-top:28px">
+      <details open>
+        <summary>Нужно ли что-то устанавливать сотрудникам?</summary>
+        <p>Нет. Приложение открывается внутри Telegram по ссылке — как обычный чат. Работает
+          и на Android, и на iPhone, память телефона не занимает. Обновления приходят сами,
+          рассылать новую версию не нужно.</p>
+      </details>
+      <details>
+        <summary>Сколько хранятся фотоотчёты?</summary>
+        <p>Результаты проверок хранятся бессрочно: кто, когда, где, какой пункт и с каким
+          вердиктом. Сами снимки хранятся 10 дней и затем стираются — иначе объём базы растёт
+          быстрее, чем это имеет смысл оплачивать. Если снимки нужны дольше, подключается
+          «Архив фотоотчётов»: фото уходят в закрытый канал вашей компании в Telegram
+          и хранятся без ограничения срока.</p>
+      </details>
+      <details>
+        <summary>Кому принадлежат данные?</summary>
+        <p>Вам. Выгружаются в Excel по запросу в любой момент — вся история чек-листов,
+          приходов, обучения и премий. При отказе от подписки данные отдаём.</p>
+      </details>
+      <details>
+        <summary>У нас нет описанных процессов и регламентов. Это проблема?</summary>
+        <p>Нет, но это отдельная работа. Мы изучаем, как всё устроено сейчас, описываем процесс
+          и превращаем его в чек-листы, инструкции и уроки. Оплачивается отдельно от внедрения,
+          расценки — в разделе «Тарифы». Если что-то уже записано хоть в тетради, идёт в зачёт.</p>
+      </details>
+      <details>
+        <summary>Можно подключить только часть модулей?</summary>
+        <p>Да. Тариф выбирается по числу точек и сотрудников, а модули внутри него включаются
+          по надобности — чтобы у сотрудника на экране не было лишнего. Программа лояльности
+          и «А-игроки» подключаются к младшим тарифам отдельной опцией.</p>
+      </details>
+      <details>
+        <summary>Что если сотрудников станет больше, чем в тарифе?</summary>
+        <p>Доплата 45 смн за человека и 250 смн за точку в месяц. Считаются только действующие
+          сотрудники — уволенный из счёта уходит. Если превышение становится постоянным,
+          выгоднее перейти на следующий тариф; мы об этом сообщим сами.</p>
+      </details>
+      <details>
+        <summary>На каком языке работает приложение?</summary>
+        <p>На русском и таджикском. Названия разделов настраиваются под вашу компанию: если
+          у вас «объекты», а не «точки», — так и будет написано на экране.</p>
+      </details>
+      <details>
+        <summary>Что входит в подписку кроме самого приложения?</summary>
+        <p>Работа сервера и базы данных круглосуточно, все обновления платформы, поддержка
+          и доработки под ваши задачи в рамках оплаченных модулей, хранение данных
+          и ежедневное резервное копирование.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── ЗАЯВКА ────────────────────────────────────────────────────────────── -->
+<section class="dark" id="zayavka">
+  <div class="wrap" style="max-width:720px">
+    <p class="eyebrow">Заявка</p>
+    <h2>Покажем приложение в работе</h2>
+    <p class="lead">Полчаса по видео или лично: смотрим, как устроена работа у вас, показываем
+      систему на реальных экранах и называем цену под вашу структуру.</p>
+
+    <form class="form" id="lead" novalidate>
+      <div class="row">
+        <input name="name" placeholder="Имя *" required autocomplete="name">
+        <input name="org" placeholder="Компания" autocomplete="organization">
+      </div>
+      <div class="row">
+        <input name="phone" placeholder="Телефон или @Telegram *" required autocomplete="tel">
+        <select name="size" aria-label="Размер компании">
+          <option value="">Сколько сотрудников</option>
+          <option>до 8</option>
+          <option>9–20</option>
+          <option>21–50</option>
+          <option>больше 50</option>
+        </select>
+      </div>
+      <textarea name="comment" rows="3" placeholder="Чем занимаетесь и что хотите закрыть в первую очередь"></textarea>
+      <button class="btn" type="submit">Отправить заявку</button>
+      <p class="hint">Отвечаем в тот же день. Данные используем только для связи по этой заявке.</p>
+      <div class="msg err" id="leadErr" hidden></div>
+      <div class="msg ok" id="leadOk" hidden>Заявка принята — свяжемся с вами сегодня.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fbar">
+    <div>Рақам — платформа цифровизации бизнеса. Душанбе, Таджикистан.</div>
+    <div><a href="#tarify">Тарифы</a> · <a href="#voprosy">Вопросы</a> · <a href="#zayavka">Связаться</a></div>
+  </div>
+</footer>
+
+<script>
+/* ⚠️ ЗАПОЛНИТЬ ПЕРЕД ПУБЛИКАЦИЕЙ.
+   FORM_ENDPOINT — URL веб-приложения Apps Script (/exec), код приёмника лежит в
+   docs/landing-form-receiver.gs. Пока пусто — форма честно скажет, что не подключена,
+   и предложит написать в Telegram.
+   TELEGRAM — запасной канал связи: https://t.me/<ваш аккаунт>. */
+var FORM_ENDPOINT = '';
+var TELEGRAM = '';
+
+(function () {
+  var form = document.getElementById('lead');
+  var err = document.getElementById('leadErr');
+  var ok = document.getElementById('leadOk');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.hidden = true;
+
+    var fd = new FormData(form);
+    // Проверяем сами: novalidate убирает браузерные подсказки на английском.
+    if (!String(fd.get('name') || '').trim() || !String(fd.get('phone') || '').trim()) {
+      err.hidden = false;
+      err.textContent = 'Заполните имя и телефон — без них мы не сможем ответить.';
+      return;
+    }
+
+    var data = {
+      name: fd.get('name'), org: fd.get('org'), phone: fd.get('phone'),
+      comment: [fd.get('size') ? ('Сотрудников: ' + fd.get('size')) : '', fd.get('comment')]
+        .filter(Boolean).join(' · '),
+      source: 'landing/index'
+    };
+
+    if (!FORM_ENDPOINT) {
+      err.hidden = false;
+      err.innerHTML = TELEGRAM
+        ? 'Форма пока не подключена. Напишите нам в Telegram: <a href="' + TELEGRAM + '" style="color:#FFB394">' + TELEGRAM.replace(/^https?:\/\//, '') + '</a>'
+        : 'Форма пока не подключена — укажите FORM_ENDPOINT в коде страницы.';
+      return;
+    }
+
+    var btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Отправляем…';
+    fetch(FORM_ENDPOINT, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j || !j.ok) throw new Error('rejected');
+      form.querySelectorAll('input,select,textarea,button,.hint').forEach(function (n) { n.hidden = true; });
+      ok.hidden = false;
+    }).catch(function () {
+      btn.disabled = false; btn.textContent = 'Отправить заявку';
+      err.hidden = false;
+      err.textContent = 'Не удалось отправить. Попробуйте ещё раз или напишите нам в Telegram.';
+    });
+  });
+})();
+</script>
+</body>
+</html>
