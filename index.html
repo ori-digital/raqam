@@ -421,8 +421,8 @@ footer a{color:#c3cbdd}
         </tbody>
       </table>
     </div>
-    <p style="font-size:14px;color:var(--muted);margin-top:12px">Если материалы есть —
-      хоть в тетради, хоть в переписке, — они идут в зачёт и цена ниже.</p>
+    <p style="font-size:14px;color:var(--muted);margin-top:12px">Если готовые материалы
+      есть — они идут в зачёт и цена ниже.</p>
   </div>
 </section>
 
@@ -579,12 +579,14 @@ footer a{color:#c3cbdd}
 </footer>
 
 <script>
-/* ⚠️ ЗАПОЛНИТЬ ПЕРЕД ПУБЛИКАЦИЕЙ.
-   FORM_ENDPOINT — URL веб-приложения Apps Script (/exec), код приёмника лежит в
-   docs/landing-form-receiver.gs. Пока пусто — форма честно скажет, что не подключена,
-   и предложит написать в Telegram.
-   TELEGRAM — запасной канал связи: https://t.me/<ваш аккаунт>. */
-var FORM_ENDPOINT = '';
+/* Приём заявок — ядро Рақам, а не Apps Script: эндпоинт POST /api/leads уже существует
+   (routes.js), публичный, отвечает {ok:true,id}, CORS открыт. Отдельный приёмник на
+   Apps Script заводить незачем — заявки лягут в ту же базу, где живут арендаторы, и
+   видны по GET /api/leads с заголовком X-Admin-Token.
+   ⚠️ До 02.08.2026 здесь стояла пустая строка, и форма показывала посетителю
+   «укажите FORM_ENDPOINT в коде страницы». За всё время не пришло ни одной заявки. */
+var FORM_ENDPOINT = 'https://raqam-core.onrender.com/api/leads';
+/* Запасной канал, если ядро совсем недоступно. Пусто — строка про Telegram не показывается. */
 var TELEGRAM = '';
 
 (function () {
@@ -621,17 +623,38 @@ var TELEGRAM = '';
 
     var btn = form.querySelector('button');
     btn.disabled = true; btn.textContent = 'Отправляем…';
-    fetch(FORM_ENDPOINT, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
-    }).then(function (r) { return r.json(); }).then(function (j) {
-      if (!j || !j.ok) throw new Error('rejected');
-      form.querySelectorAll('input,select,textarea,button,.hint').forEach(function (n) { n.hidden = true; });
-      ok.hidden = false;
-    }).catch(function () {
-      btn.disabled = false; btn.textContent = 'Отправить заявку';
-      err.hidden = false;
-      err.textContent = 'Не удалось отправить. Попробуйте ещё раз или напишите нам в Telegram.';
-    });
+
+    /* Ядро живёт на бесплатном тарифе Render и засыпает без запросов. Первое обращение
+       поднимает его и может идти до минуты — одиночный fetch в этот момент имеет все шансы
+       отвалиться, и человек, который уже написал имя и телефон, увидит «не удалось».
+       Поэтому три попытки с паузой: столько же делают наши скрипты обслуживания. */
+    отправить(3);
+
+    function отправить(осталось) {
+      fetch(FORM_ENDPOINT, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        if (!j || !j.ok) throw new Error('rejected');
+        form.querySelectorAll('input,select,textarea,button,.hint').forEach(function (n) { n.hidden = true; });
+        ok.hidden = false;
+      }).catch(function () {
+        if (--осталось > 0) { btn.textContent = 'Отправляем… ещё раз'; setTimeout(function () { отправить(осталось); }, 4000); return; }
+        btn.disabled = false; btn.textContent = 'Отправить заявку';
+        err.hidden = false;
+        err.innerHTML = TELEGRAM
+          ? 'Не удалось отправить. Попробуйте ещё раз или напишите нам в Telegram: <a href="' + TELEGRAM + '" style="color:#FFB394">' + TELEGRAM.replace(/^https?:\/\//, '') + '</a>'
+          : 'Не удалось отправить. Попробуйте ещё раз через минуту.';
+      });
+    }
+  });
+
+  /* Будим ядро заранее — как только человек коснулся первого поля. К моменту, когда он
+     дозаполнит форму, сервис уже проснётся, и отправка пройдёт с первой попытки. */
+  var разбужено = false;
+  form.addEventListener('focusin', function () {
+    if (разбужено || !FORM_ENDPOINT) return;
+    разбужено = true;
+    try { fetch(FORM_ENDPOINT.replace(/\/leads$/, '/health'), { mode: 'cors' }).catch(function () {}); } catch (e) {}
   });
 })();
 </script>
