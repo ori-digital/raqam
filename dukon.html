@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0A0E1A">
+<title>Дӯкон — касса и склад для магазина, работает без интернета</title>
+<meta name="description" content="Касса, склад, долги-насия, лояльность и отчёты для розничного магазина. Работает полностью без интернета, ставится на телефон или планшет. Оплата по единому QR с уже вписанной суммой. 149 сомони в месяц, без счётчиков.">
+<meta property="og:title" content="Дӯкон — касса, которая не останавливается">
+<meta property="og:description" content="Касса и склад для магазина. Без интернета, без сервера, без счётчиков за точки и товары. 149 смн/мес.">
+<meta property="og:type" content="website">
+<style>
+/* ──────────────────────────────────────────────────────────────────────────
+   Лендинг Дӯкона. Те же кости, что у страницы Рақам (общий дом, общая касса
+   стилей), но акцент зелёный: это отдельный продукт, а не тариф платформы.
+   Оранжевый CTA остаётся общим — по нему узнаётся кнопка действия.
+   ────────────────────────────────────────────────────────────────────────── */
+:root{
+  color-scheme:light;
+  --acc:#15966A;          /* изумруд Дӯкона — акценты, рамки */
+  --acc-d:#0E7350;
+  --acc-soft:rgba(21,150,106,.10);
+  --acc-line:rgba(21,150,106,.28);
+  --cta:#FF6B3D;
+  --cta-d:#E8531F;
+  --night:#0A0E1A;
+  --night-2:#111A19;
+  --night-line:rgba(255,255,255,.10);
+  --ink:#111624;
+  --ink-2:#404a60;
+  --muted:#6b7488;
+  --plane:#FFFFFF;
+  --plane-2:#F4F7F5;
+  --line:#E2E8E5;
+  --shadow:0 1px 2px rgba(17,22,36,.05),0 16px 40px -22px rgba(17,22,36,.28);
+  --r:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--plane);color:var(--ink);line-height:1.6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-text-size-adjust:100%;}
+img{max-width:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:72px 0}
+h2{font-size:clamp(24px,3.4vw,34px);line-height:1.2;letter-spacing:-.025em;margin:0 0 10px;font-weight:800;text-wrap:balance}
+h3{font-size:18px;margin:0 0 6px;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 14px}
+.lead{font-size:17px;color:var(--ink-2);max-width:64ch;margin-bottom:34px}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--acc);margin:0 0 10px}
+.dark{background:var(--night);color:#fff}
+.dark h2,.dark h3{color:#fff}
+.dark .lead{color:#aeb7cd}
+.dark .eyebrow{color:#6FD8AC}
+.tint{background:var(--plane-2)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--cta);color:#fff;font-weight:700;font-size:16px;padding:15px 30px;
+  border:0;border-radius:12px;text-decoration:none;cursor:pointer;font-family:inherit;
+  transition:background .15s,transform .15s;white-space:nowrap}
+.btn:hover{background:var(--cta-d);transform:translateY(-1px)}
+.btn:focus-visible{outline:3px solid #6FD8AC;outline-offset:2px}
+.btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.34)}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.btn.line{background:transparent;color:var(--acc-d);border:1px solid var(--acc-line)}
+.btn.line:hover{background:var(--acc-soft)}
+.btn[disabled]{opacity:.6;cursor:default;transform:none}
+
+header{position:sticky;top:0;z-index:20;background:rgba(10,14,26,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--night-line)}
+.bar{display:flex;align-items:center;gap:22px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.logo i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--acc),#6FD8AC);font-style:normal;font-size:18px}
+nav{margin-left:auto;display:flex;gap:24px;align-items:center}
+nav a{color:#c3cbdd;text-decoration:none;font-size:15px}
+nav a:hover{color:#fff}
+nav .btn{padding:10px 20px;font-size:15px}
+@media(max-width:860px){nav a:not(.btn){display:none}}
+
+.hero{padding:84px 0 92px}
+.hero h1{font-size:clamp(30px,5.4vw,52px);line-height:1.08;letter-spacing:-.035em;margin:0 0 20px;
+  font-weight:800;max-width:15ch;text-wrap:balance}
+.hero .sub{font-size:clamp(17px,2.2vw,20px);color:#b8c0d4;max-width:56ch;margin:0 0 34px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.trust{display:flex;gap:34px;flex-wrap:wrap;margin-top:52px;padding-top:30px;border-top:1px solid var(--night-line)}
+.trust b{display:block;font-size:27px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.trust span{font-size:14px;color:#8f99b2}
+
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.card{background:var(--plane);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.card p{color:var(--ink-2);font-size:15px;margin:0}
+.dark .card{background:var(--night-2);border-color:var(--night-line)}
+.dark .card p{color:#a9b2c8}
+.ico{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;
+  background:var(--acc-soft);font-size:21px;margin-bottom:14px}
+.dark .ico{background:rgba(111,216,172,.14)}
+
+.pain{padding-left:20px;border-left:3px solid #E5EAE7}
+.pain h3{color:var(--ink)}
+.pain p{color:var(--muted);font-size:15px}
+.pain .then{display:block;margin-top:10px;color:var(--acc-d);font-weight:600}
+
+.step{position:relative;padding-top:8px}
+.step .n{font-size:46px;font-weight:800;color:var(--acc);opacity:.24;line-height:1;letter-spacing:-.04em}
+.step h3{margin-top:10px}
+.step p{color:var(--ink-2);font-size:15px}
+
+/* ── тариф ── */
+.price{max-width:560px;background:var(--plane);border:2px solid var(--acc-line);border-radius:20px;
+  padding:32px;box-shadow:var(--shadow)}
+.price .pr{font-size:46px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:6px}
+.price .pr small{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:0}
+.price .sub{color:var(--ink-2);margin-bottom:22px}
+.terms{display:grid;gap:10px;margin:0 0 22px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.term{display:flex;justify-content:space-between;gap:16px;font-size:15px}
+.term span:last-child{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.price ul{margin:0 0 24px;padding:0;list-style:none;display:grid;gap:9px}
+.price li{position:relative;padding-left:26px;font-size:15px;color:var(--ink-2)}
+.price li::before{content:"✓";position:absolute;left:0;color:var(--acc);font-weight:800}
+
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:13px 10px;text-align:left;border-bottom:1px solid var(--night-line)}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:#8f99b2;font-weight:700}
+td:first-child{color:#c3cbdd}
+td b{color:#fff}
+.scroll{overflow-x:auto}
+
+details{border-bottom:1px solid var(--line);padding:16px 0}
+details summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";float:right;color:var(--acc);font-weight:800}
+details[open] summary::after{content:"–"}
+details p{margin:12px 0 0;color:var(--ink-2);font-size:15px}
+
+.form{display:grid;gap:12px}
+.form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.form .row{grid-template-columns:1fr}}
+.form input,.form select,.form textarea{width:100%;padding:14px 16px;border-radius:12px;
+  border:1px solid var(--night-line);background:#0E1424;color:#fff;font:inherit;font-size:16px}
+.form input::placeholder,.form textarea::placeholder{color:#7d8699}
+.form .hint{font-size:13px;color:#8f99b2;margin:0}
+.msg{padding:13px 16px;border-radius:12px;font-size:15px}
+.msg.err{background:rgba(255,107,61,.14);color:#FFB394}
+.msg.ok{background:rgba(21,150,106,.16);color:#8FE5C0}
+
+.cross{background:var(--acc-soft);border:1px solid var(--acc-line);border-radius:var(--r);padding:26px;
+  display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.cross div{flex:1;min-width:260px}
+.cross h3{margin-bottom:4px}
+.cross p{margin:0;color:var(--ink-2);font-size:15px}
+
+footer{background:var(--night);color:#8f99b2;padding:30px 0;font-size:14px}
+.fbar{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:#c3cbdd;text-decoration:none}
+footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top"><i>Д</i>Дӯкон</a>
+    <nav>
+      <a href="#kak">Как работает</a>
+      <a href="#chto">Возможности</a>
+      <a href="#cena">Цена</a>
+      <a href="index.html">Рақам</a>
+      <a class="btn" href="#zayavka">Показать демо</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── ГЕРОЙ ─────────────────────────────────────────────────────────────── -->
+<section class="dark hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Касса и склад для магазина</p>
+    <h1>Касса, которая не останавливается</h1>
+    <p class="sub">Продажи, товар, долги и баллы — на телефоне или планшете за прилавком.
+      Работает полностью без интернета: связь пропала, а магазин торгует дальше.</p>
+    <div class="cta-row">
+      <a class="btn" href="#zayavka">Показать демо</a>
+      <a class="btn ghost" href="#cena">Сколько стоит</a>
+    </div>
+    <div class="trust">
+      <div><b>Без сети</b><span>ни одного запроса при продаже</span></div>
+      <div><b>Без счётчиков</b><span>товары, точки и продавцы не считаются</span></div>
+      <div><b>149 смн</b><span>в месяц, без платы за запуск</span></div>
+      <div><b>RU · TJ</b><span>русский и таджикский</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ПРОБЛЕМА ──────────────────────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Знакомо?</p>
+    <h2>Как это устроено в большинстве магазинов</h2>
+    <p class="lead">Мы разбирали учёт в реальных точках Душанбе. Повторяется одно и то же.</p>
+    <div class="grid g4">
+      <div class="pain">
+        <h3>Пропал интернет — встала касса</h3>
+        <p>Облачная программа без связи не работает, а связь в Душанбе пропадает регулярно.
+          <span class="then">Стало: касса живёт на устройстве и не зависит от сети вообще.</span></p>
+      </div>
+      <div class="pain">
+        <h3>Не оплатили — выключили</h3>
+        <p>Подписка не прошла, и торговая точка стоит. Именно так магазины и теряют учёт.
+          <span class="then">Стало: без оплаты нет обновлений и поддержки, но касса торгует.</span></p>
+      </div>
+      <div class="pain">
+        <h3>Номер для перевода диктуют вслух</h3>
+        <p>Продавец называет номер по памяти, покупатель набирает сумму руками, ошибаются оба.
+          <span class="then">Стало: QR с уже вписанной суммой чека, подтвердить — и всё.</span></p>
+      </div>
+      <div class="pain">
+        <h3>Долги в тетради</h3>
+        <p>Кто взял насия, сколько и когда — помнит только продавец, который сегодня работает.
+          <span class="then">Стало: долг привязан к покупателю, погашение — документом.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── КАК РАБОТАЕТ ──────────────────────────────────────────────────────── -->
+<section class="tint" id="kak">
+  <div class="wrap">
+    <p class="eyebrow">Как работает</p>
+    <h2>Запуск — один день, а не проект</h2>
+    <p class="lead">Ни кассового аппарата, ни компьютера, ни настройки сервера. Открывается по
+      ссылке и добавляется на экран телефона или планшета, как обычное приложение.</p>
+    <div class="grid g3">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Переносим товары</h3>
+        <p>Выгрузка из прежней программы, прайс в Excel или простой список — загружается файлом.
+          Названия, цены, штрихкоды и группы встают на место сами.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Пересчитываем полку</h3>
+        <p>Первая инвентаризация задаёт стартовые остатки. Старые цифры из прежней программы
+          переносить не советуем: чаще всего они давно не сходятся с полкой.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>Показываем продавцу</h3>
+        <p>Полчаса. Дальше инструкция остаётся внутри приложения — на русском и таджикском,
+          читается там же, где человек застрял, и без интернета.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ВОЗМОЖНОСТИ ───────────────────────────────────────────────────────── -->
+<section class="dark" id="chto">
+  <div class="wrap">
+    <p class="eyebrow">Возможности</p>
+    <h2>Всё в базовой сборке</h2>
+    <p class="lead">Мы не делим функции по тарифам. Магазину с одной точкой они нужны не меньше,
+      чем сети, — просто у сети больше денег, и обычно этим пользуются.</p>
+    <div class="grid g3">
+      <div class="card"><div class="ico">🧾</div><h3>Касса</h3>
+        <p>Сканер камерой или USB, поиск по названию, скидки на позицию, отложенные чеки,
+          возвраты, печать на термопринтер 58 мм.</p></div>
+      <div class="card"><div class="ico">📲</div><h3>Оплата по QR с суммой</h3>
+        <p>Ваш единый QR с уже вписанной суммой чека. Покупатель наводит банковское приложение
+          и подтверждает. Отдельный договор с банком не нужен.</p></div>
+      <div class="card"><div class="ico">📦</div><h3>Склад</h3>
+        <p>Приход, списание, инвентаризация с недостачей в сомони. Остаток меняется только
+          документом — видно, откуда взялась каждая цифра.</p></div>
+      <div class="card"><div class="ico">🏬</div><h3>Несколько точек</h3>
+        <p>Остаток по каждой точке отдельно и общий по сети, перемещения между точками
+          документом, сравнение точек в отчётах.</p></div>
+      <div class="card"><div class="ico">📒</div><h3>Долги — насия</h3>
+        <p>Кто должен, сколько и с какого числа. Погашение — документ, а не зачёркнутая строка
+          в тетради.</p></div>
+      <div class="card"><div class="ico">🎁</div><h3>Лояльность</h3>
+        <p>Баллы начисляются и списываются на кассе, покупатель видит остаток на чеке и на
+          экране, повёрнутом к нему. Накопленные баллы переносятся из прежней программы.</p></div>
+      <div class="card"><div class="ico">🕒</div><h3>Смены и журнал действий</h3>
+        <p>Z-отчёт с комиссией банка. Удаление позиций, ручные скидки, правки цены и расхождения
+          при закрытии — с суммой, временем и именем продавца.</p></div>
+      <div class="card"><div class="ico">📈</div><h3>Отчёты</h3>
+        <p>По дням, товарам, продавцам, точкам и способам оплаты. ABC-анализ, неликвиды,
+          стоимость остатка. Выгрузка в CSV — всегда и бесплатно.</p></div>
+      <div class="card"><div class="ico">⏳</div><h3>Сроки годности</h3>
+        <p>Партии с датами, первым уходит товар с ближним сроком, отдельный экран
+          «что истекает».</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ЦЕНА ──────────────────────────────────────────────────────────────── -->
+<section id="cena">
+  <div class="wrap">
+    <p class="eyebrow">Цена</p>
+    <h2>Одна цена за весь магазин</h2>
+    <p class="lead">Без тарифов и без счётчиков. Цена не растёт от числа товаров, точек,
+      продавцов и чеков — именно на этих счётчиках обычно и ломается бюджет магазина.</p>
+
+    <div class="price">
+      <div class="pr">149 <small>смн / мес</small></div>
+      <p class="sub">Всё, что перечислено выше. Оплата в сомони.</p>
+
+      <div class="terms">
+        <div class="term"><span>За квартал</span><span>399 смн · 133 в месяц</span></div>
+        <div class="term"><span>За год</span><span>1 490 смн · 124 в месяц</span></div>
+        <div class="term"><span>Запуск и обучение</span><span>900 смн разово</span></div>
+      </div>
+
+      <ul>
+        <li>Точки, продавцы и товары — без доплаты</li>
+        <li>Перенос каталога из прежней программы</li>
+        <li>Настройка оплаты по QR</li>
+        <li>Обновления и поддержка в Telegram</li>
+        <li>Выгрузка ваших данных в CSV в любой момент</li>
+        <li>Не оплатили — касса продолжает работать</li>
+      </ul>
+
+      <a class="btn" href="#zayavka">Показать демо</a>
+    </div>
+
+    <p class="lead" style="margin-top:26px">Запуск можно сделать и самому — приложение
+      рассчитано на это, инструкция внутри. Платный запуск нужен, если хотите, чтобы каталог
+      перенесли, QR настроили и продавцов обучили за вас.</p>
+  </div>
+</section>
+
+<!-- ── СРАВНЕНИЕ ─────────────────────────────────────────────────────────── -->
+<section class="dark">
+  <div class="wrap">
+    <p class="eyebrow">Чем отличается</p>
+    <h2>Что вы платите на самом деле</h2>
+    <p class="lead">Сравниваем не функции, а условия — они решают, останется программа
+      в магазине через год или нет.</p>
+    <div class="scroll">
+      <table>
+        <tr>
+          <th>Условие</th><th>Облачные программы</th><th>Дӯкон</th>
+        </tr>
+        <tr><td>Нет интернета</td><td>касса не работает</td><td><b>торгует дальше</b></td></tr>
+        <tr><td>Не прошла оплата</td><td>доступ закрывают</td><td><b>касса работает, нет обновлений</b></td></tr>
+        <tr><td>Число товаров</td><td>ограничено тарифом</td><td><b>без ограничений</b></td></tr>
+        <tr><td>Вторая точка</td><td>дороже тариф</td><td><b>без доплаты</b></td></tr>
+        <tr><td>Каждый продавец</td><td>дороже тариф</td><td><b>без доплаты</b></td></tr>
+        <tr><td>Выгрузить свои данные</td><td>часто только на платном тарифе</td><td><b>всегда бесплатно</b></td></tr>
+        <tr><td>Плата за запуск</td><td>бывает несколько тысяч</td><td><b>900 смн или сами</b></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── СВЯЗКА С РАҚАМ ────────────────────────────────────────────────────── -->
+<section class="tint">
+  <div class="wrap">
+    <div class="cross">
+      <div>
+        <h3>У вас не только товар, но и люди?</h3>
+        <p>Дӯкон считает товар и деньги. <b>Рақам</b> — вторая часть линейки: чек-листы смен
+          с фотоотчётом, приход и уход, обучение и аттестация, премии и дашборд руководителя.
+          Работает в Telegram, ставить ничего не нужно.</p>
+      </div>
+      <a class="btn line" href="index.html">Посмотреть Рақам</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── ВОПРОСЫ ───────────────────────────────────────────────────────────── -->
+<section id="voprosy">
+  <div class="wrap" style="max-width:820px">
+    <p class="eyebrow">Вопросы</p>
+    <h2>Что обычно спрашивают</h2>
+
+    <details>
+      <summary>Правда ли работает без интернета?</summary>
+      <p>Да, полностью. Товары, цены, остатки, чеки и долги лежат на самом устройстве.
+        При продаже приложение не обращается в сеть ни разу. Интернет нужен один раз —
+        чтобы открыть приложение и поставить его на экран.</p>
+    </details>
+
+    <details>
+      <summary>А если телефон потеряется или сломается?</summary>
+      <p>В приложении есть резервная копия: файл выгружается на устройство или в облако и
+        разворачивается на новом за минуту. Делать её раз в неделю — две секунды. Мы это
+        показываем при запуске.</p>
+    </details>
+
+    <details>
+      <summary>Нужен ли кассовый аппарат или специальный принтер?</summary>
+      <p>Нет. Чек печатается на обычный термопринтер 58 мм через системную печать — или не
+        печатается вовсе, если у вас так принято. Сканер штрихкодов подойдёт любой USB,
+        а можно сканировать камерой телефона.</p>
+    </details>
+
+    <details>
+      <summary>Как работает оплата по QR?</summary>
+      <p>Мы берём ваш единый QR — тот же, что уже стоит на кассе, — и подставляем в него сумму
+        чека. Покупатель наводит своё банковское приложение и подтверждает: ни номер, ни сумму
+        он не набирает. Интернет при этом нужен только ему.</p>
+    </details>
+
+    <details>
+      <summary>Можно перенести товары из МоегоСклада, 1С или Excel?</summary>
+      <p>Да. Приложение принимает CSV и само распознаёт колонки — названия, цены, штрихкоды,
+        группы, единицы. Повторная загрузка обновляет карточки, а не плодит дубли.</p>
+    </details>
+
+    <details>
+      <summary>Кто видит закупочные цены и прибыль?</summary>
+      <p>Только владелец и управляющий. У продавца этих экранов нет вовсе — ни закупки,
+        ни прибыли, ни отчётов по марже.</p>
+    </details>
+
+    <details>
+      <summary>Что будет, если мы перестанем платить?</summary>
+      <p>Касса продолжит работать: она на вашем устройстве и никем не выключается. Прекратятся
+        обновления и поддержка. Данные останутся вашими — выгрузить их можно в любой момент.</p>
+    </details>
+
+    <details>
+      <summary>Подходит ли для сети из нескольких точек?</summary>
+      <p>Да. Остаток ведётся по каждой точке отдельно, перемещения оформляются документом,
+        в отчётах точки сравниваются между собой. Доплаты за точки нет. Пока у каждой точки
+        своё устройство и своя база — общий сервер для сети мы делаем отдельно, спрашивайте.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ── ЗАЯВКА ────────────────────────────────────────────────────────────── -->
+<section class="dark" id="zayavka">
+  <div class="wrap" style="max-width:720px">
+    <p class="eyebrow">Заявка</p>
+    <h2>Покажем кассу на ваших товарах</h2>
+    <p class="lead">Полчаса по видео или лично. Загрузим ваш прайс, пробьём пару чеков,
+      покажем отчёты и назовём срок запуска.</p>
+
+    <form class="form" id="lead" novalidate>
+      <div class="row">
+        <input name="name" placeholder="Имя *" required autocomplete="name">
+        <input name="org" placeholder="Магазин" autocomplete="organization">
+      </div>
+      <div class="row">
+        <input name="phone" placeholder="Телефон или @Telegram *" required autocomplete="tel">
+        <select name="size" aria-label="Число точек">
+          <option value="">Сколько точек</option>
+          <option>одна</option>
+          <option>2–3</option>
+          <option>больше трёх</option>
+        </select>
+      </div>
+      <textarea name="comment" rows="3" placeholder="Чем торгуете и в чём сейчас главная сложность"></textarea>
+      <button class="btn" type="submit">Отправить заявку</button>
+      <p class="hint">Отвечаем в тот же день. Данные используем только для связи по этой заявке.</p>
+      <div class="msg err" id="leadErr" hidden></div>
+      <div class="msg ok" id="leadOk" hidden>Заявка принята — свяжемся с вами сегодня.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fbar">
+    <div>Дӯкон — касса и склад для розничной торговли. Душанбе, Таджикистан.</div>
+    <div><a href="#cena">Цена</a> · <a href="#voprosy">Вопросы</a> · <a href="index.html">Рақам</a></div>
+  </div>
+</footer>
+
+<script>
+/* Заявки идут в то же ядро, что и с главной страницы: POST /api/leads (routes.js),
+   публичный, отвечает {ok:true,id}. Отличается только source — чтобы в базе было видно,
+   с какой страницы пришёл человек, и не спорить потом, что именно он хотел. */
+var FORM_ENDPOINT = 'https://raqam-core.onrender.com/api/leads';
+var TELEGRAM = '';
+
+(function () {
+  var form = document.getElementById('lead');
+  var err = document.getElementById('leadErr');
+  var ok = document.getElementById('leadOk');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.hidden = true;
+
+    var fd = new FormData(form);
+    if (!String(fd.get('name') || '').trim() || !String(fd.get('phone') || '').trim()) {
+      err.hidden = false;
+      err.textContent = 'Заполните имя и телефон — без них мы не сможем ответить.';
+      return;
+    }
+
+    var data = {
+      name: fd.get('name'), org: fd.get('org'), phone: fd.get('phone'),
+      comment: [fd.get('size') ? ('Точек: ' + fd.get('size')) : '', fd.get('comment')]
+        .filter(Boolean).join(' · '),
+      source: 'landing/dukon'
+    };
+
+    var btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Отправляем…';
+
+    /* Ядро на бесплатном тарифе Render засыпает: первое обращение может идти до минуты.
+       Три попытки с паузой, чтобы человек, уже написавший телефон, не увидел «не удалось». */
+    отправить(3);
+
+    function отправить(осталось) {
+      fetch(FORM_ENDPOINT, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+      }).then(function (r) { return r.json(); }).then(function (j) {
+        if (!j || !j.ok) throw new Error('rejected');
+        form.querySelectorAll('input,select,textarea,button,.hint').forEach(function (n) { n.hidden = true; });
+        ok.hidden = false;
+      }).catch(function () {
+        if (--осталось > 0) { btn.textContent = 'Отправляем… ещё раз'; setTimeout(function () { отправить(осталось); }, 4000); return; }
+        btn.disabled = false; btn.textContent = 'Отправить заявку';
+        err.hidden = false;
+        err.innerHTML = TELEGRAM
+          ? 'Не удалось отправить. Попробуйте ещё раз или напишите нам в Telegram: <a href="' + TELEGRAM + '" style="color:#FFB394">' + TELEGRAM.replace(/^https?:\/\//, '') + '</a>'
+          : 'Не удалось отправить. Попробуйте ещё раз через минуту.';
+      });
+    }
+  });
+
+  /* Будим ядро, как только человек коснулся формы. */
+  var разбужено = false;
+  form.addEventListener('focusin', function () {
+    if (разбужено) return;
+    разбужено = true;
+    try { fetch(FORM_ENDPOINT.replace(/\/leads$/, '/health'), { mode: 'cors' }).catch(function () {}); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
